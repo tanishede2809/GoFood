@@ -1,6 +1,6 @@
-# 🍔 FoodDash - Food Delivery App
+# 🍔 GoFood - Food Delivery App
 
-A fully functional food delivery web application built with React. FoodDash allows users to browse restaurants, explore menus, add items to cart, place orders and leave reviews.
+A fully functional food delivery web application built with React. GoFood allows users to browse restaurants, explore menus, add items to cart, place orders and leave reviews.
 
 > Built as a learning project to practice core React concepts including components, hooks, routing, context API and localStorage persistence.
 
@@ -111,10 +111,10 @@ src/
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/fooddash.git
+git clone https://github.com/tanishede2809/GoFood.git
 
 # Navigate into the project
-cd fooddash
+cd GoFood
 
 # Install dependencies
 npm install
@@ -134,7 +134,6 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - [ ] Add real password hashing with bcrypt
 - [ ] Add JWT based authentication
 - [ ] Add search and filter for restaurants
-- [ ] Make the app fully responsive for mobile
 
 ---
 
