@@ -21,7 +21,7 @@ A fully functional food delivery web application built with React. GoFood allows
 ![Login Page](screenshots/login.png)
 
 ### 📋 Restaurant Menu
-![Restaurant Menu](screenshots/RestaurantmMenu.png)
+![Restaurant Menu](screenshots/RestaurantMenu.png)
 
 ### 🛒 Cart
 ![Cart](screenshots/cart.png)
