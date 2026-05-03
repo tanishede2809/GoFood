@@ -34,6 +34,7 @@ function LoginPage() {
     }
 
     return (
+        
         <div style={styles.card}>
             <div style={styles.card}>
                 <h2 style={styles.title}>Welcome Back!</h2>
@@ -80,6 +81,7 @@ function LoginPage() {
 }
 
 const styles = {
+    
     page: {
         minHeight: '100vh',
         backgroundColor: '#fff3ee',
