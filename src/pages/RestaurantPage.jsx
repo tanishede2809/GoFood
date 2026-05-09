@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
-import restaurants from '../data/restaurants'
+import { api } from '../api'
+//import restaurants from '../data/restaurants'
 import Navbar from '../components/Navbar'
 import ReviewSection from '../components/ReviewSection'
 
@@ -9,8 +11,37 @@ function RestaurantPage() {
   const { id } = useParams()
   const { addToCart } = useCart()
   const { user } = useAuth()
+  const [restaurant, setRestaurant] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const restaurant = restaurants.find((r) => r.id === parseInt(id))
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      try {
+        const data = await api(`/restaurants/${id}`)
+        setRestaurant(data)
+      } catch (err) {
+        setError('Restaurant not found!')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchRestaurant()
+  }, [id])
+
+  const handleAddToCart = (item) => {
+    if (!user) {
+      alert('Please login to add items to cart!')
+      return
+    }
+    addToCart(item)
+    alert(`${item.name} added to cart!`)
+  }
+
+  if (loading) return <div><Navbar /><p style={styles.center}>Loading menu... 🍽️</p></div>
+  if (error) return <div><Navbar /><p style={styles.center}>{error}</p></div>
+
+  /*const restaurant = restaurants.find((r) => r.id === parseInt(id))
 
   if (!restaurant) {
     return (
@@ -28,7 +59,7 @@ function RestaurantPage() {
     }
     addToCart(item)
     alert(`${item.name} added to cart!`)
-  }
+  }*/
 
   return (
     <div>
@@ -62,7 +93,7 @@ function RestaurantPage() {
           ))}
         </div>
       </div>
-      <ReviewSection restaurantId={restaurant.id} />
+      <ReviewSection restaurantId={restaurant._id} />
     </div>
   )
 

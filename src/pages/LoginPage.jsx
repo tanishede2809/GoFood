@@ -7,11 +7,12 @@ function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const { login } = useAuth()
     const navigate = useNavigate()
 
-    const handleLogin = () => {
+    /*const handleLogin = () => {
         if (!email || !password) {
             setError('Please fill in all fields')
             return
@@ -31,6 +32,23 @@ function LoginPage() {
         setError('')
         login({ name: matchedUser.name, email: matchedUser.email })
         navigate('/')
+    }*/
+
+    const handleLogin = async () => {
+      if (!email || !password) {
+        setError('Please fill in all fields')
+        return
+      }
+      try {
+        setLoading(true)
+        setError('')
+        await login(email, password)
+        navigate('/')
+      } catch (err) {
+       setError(err.message)
+      } finally {
+       setLoading(false)
+      }
     }
 
     return (
@@ -64,8 +82,8 @@ function LoginPage() {
                         />
                     </div>
 
-                    <button style={styles.btn} onClick={handleLogin}>
-                        Login
+                    <button style={styles.btn} onClick={handleLogin} disabled={loading}>
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
 
                     <p style={styles.switchText}>

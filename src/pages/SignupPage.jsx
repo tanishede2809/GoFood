@@ -7,11 +7,13 @@ function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const { login } = useAuth()
+  //const { login } = useAuth()
+  const { signup } = useAuth()
   const navigate = useNavigate()
 
-  const handleSignup = () => {
+  const handleSignup = async() => {
     if (!name || !email || !password) {
       setError('Please fill in all fields')
       return
@@ -20,7 +22,17 @@ function SignupPage() {
       setError('Password must be at least 6 characters')
       return
     }
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]')
+    try {
+      setLoading(true)
+      setError('')
+      await signup(name, email, password)
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+    /*const existingUsers = JSON.parse(localStorage.getItem('users') || '[]')
 
     const userAlreadyExists = existingUsers.find((u) => u.email === email)
     if (userAlreadyExists) {
@@ -33,7 +45,7 @@ function SignupPage() {
     localStorage.setItem('users', JSON.stringify(updatedUsers))
 
     login({ name, email })
-    navigate('/')
+    navigate('/')*/
 
     
   }
@@ -81,8 +93,8 @@ function SignupPage() {
           />
         </div>
 
-        <button style={styles.btn} onClick={handleSignup}>
-          Create Account
+        <button style={styles.btn} onClick={handleSignup} disabled={loading}>
+          {loading ? 'Creating account...' : 'Create Account'}
         </button>
 
         <p style={styles.switchText}>

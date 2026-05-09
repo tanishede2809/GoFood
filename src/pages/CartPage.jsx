@@ -1,20 +1,44 @@
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
-import { useOrders } from '../context/OrdersContext'
+import { api } from '../api'
+//import { useOrders } from '../context/OrdersContext'
 import Navbar from '../components/Navbar'
 
 function CartPage() {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, getTotalPrice } = useCart()
+  const { user, token } = useAuth()
+  const [ordered, setOrdered] = useState(false)
+  const [loading, setLoading] = useState(false)
+  /*const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, getTotalPrice } = useCart()
   const { user } = useAuth()
   const [ordered, setOrdered] = useState(false)
-  const { placeOrder } = useOrders()
+  const { placeOrder } = useOrders()*/
 
-  const handlePlaceOrder = () => {
+  /*const handlePlaceOrder = () => {
     placeOrder(cartItems, getTotalPrice() + 40)
     clearCart()
     setOrdered(true)
+  }*/
+
+  const handlePlaceOrder = async () => {
+    console.log('Token:', token) // add this line temporarily
+    try {
+      setLoading(true)
+      await api('/orders', 'POST', {
+        items: cartItems,
+        totalPrice: getTotalPrice() + 40
+      }, token)
+      clearCart()
+      setOrdered(true)
+    } catch (err) {
+      alert('Failed to place order. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
+
+
 
   if (ordered) {
     return (

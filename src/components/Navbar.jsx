@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
-import { useOrders } from '../context/OrdersContext'
+//import { useOrders } from '../context/OrdersContext'
 
 
 function Navbar() {

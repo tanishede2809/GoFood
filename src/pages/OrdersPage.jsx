@@ -1,11 +1,33 @@
+import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
-import { useOrders } from '../context/OrdersContext'
+//import { useOrders } from '../context/OrdersContext'
 import { useAuth } from '../context/AuthContext'
+import { api } from '../api'
 import { Link } from 'react-router-dom'
 
 function OrdersPage() {
-  const { orders } = useOrders()
-  const { user } = useAuth()
+  const { user, token } = useAuth()
+  const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(false)
+      return
+    }
+    const fetchOrders = async () => {
+      try {
+        const data = await api('/orders', 'GET', null, token)
+        setOrders(data)
+      } catch (err) {
+        console.log('Failed to fetch orders')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchOrders()
+  }, [user])
+
 
   if (!user) {
     return (
@@ -18,6 +40,8 @@ function OrdersPage() {
       </div>
     )
   }
+
+  if (loading) return <div><Navbar /><p style={{ textAlign: 'center', padding: '48px' }}>Loading orders...</p></div>
 
   if (orders.length === 0) {
     return (

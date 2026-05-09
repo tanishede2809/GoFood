@@ -1,6 +1,9 @@
+require('dotenv').config()
+const mongoose = require('mongoose')
+const Restaurant = require('./models/Restaurant')
+
 const restaurants = [
   {
-    id: 1,
     name: "Pizza Palace",
     cuisine: "Italian",
     rating: 4.5,
@@ -14,7 +17,6 @@ const restaurants = [
     ]
   },
   {
-    id: 2,
     name: "Burger Barn",
     cuisine: "American",
     rating: 4.2,
@@ -28,7 +30,6 @@ const restaurants = [
     ]
   },
   {
-    id: 3,
     name: "Sushi Stop",
     cuisine: "Japanese",
     rating: 4.7,
@@ -42,7 +43,6 @@ const restaurants = [
     ]
   },
   {
-    id: 4,
     name: "Taco Town",
     cuisine: "Mexican",
     rating: 4.3,
@@ -57,4 +57,12 @@ const restaurants = [
   }
 ]
 
-export default restaurants
+mongoose.connect(process.env.MONGO_URI)
+  .then(async () => {
+    console.log('✅ Connected to MongoDB')
+    await Restaurant.deleteMany({})
+    await Restaurant.insertMany(restaurants)
+    console.log('✅ Database seeded with restaurants!')
+    mongoose.connection.close()
+  })
+  .catch((err) => console.log('❌ Error:', err.message))
